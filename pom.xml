@@ -10,14 +10,10 @@
   <properties>
       <tomcat.version>9.0.20</tomcat.version>
   </properties>
+  <dependencies>
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-core</artifactId>
-      <version>${tomcat.version}</version>
-     </dependency>
-     <dependency>
-      <groupId>org.apache.tomcat.embed</groupId>
-      <artifactId>tomcat-embed-logging-juli</artifactId>
       <version>${tomcat.version}</version>
      </dependency>
      <dependency>
@@ -55,7 +51,7 @@
                 <finalName>demo-${project.version}</finalName>
                 <archive>
                     <manifest>
-                        <mainClass>org.jfclere.tomcatPI.Main</mainClass>
+                        <mainClass>org.example.tomcat.filter.Main</mainClass>
                     </manifest>
                 </archive>
             </configuration>
