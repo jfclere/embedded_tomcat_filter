@@ -31,11 +31,16 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.servlet.Filter;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
+
 public class Main {
     private static final Log log = LogFactory.getLog(Main.class);
 
     public static void main(String[] args) throws LifecycleException, IOException {
         // Maximum logging
+        /*
         Enumeration<String> x = LogManager.getLogManager().getLoggerNames();
         while (x.hasMoreElements()) {
             String s = x.nextElement();
@@ -44,6 +49,7 @@ public class Main {
             for (Handler h : log.getHandlers())
                 h.setLevel(Level.FINE);
         }
+        */
 
         // Embedded Tomcat Configuration:
 
@@ -54,11 +60,18 @@ public class Main {
 
             // Servlet Configuration:
             File base = new File(System.getProperty("java.io.tmpdir"));
+            Context context = tomcat.addContext("", base.getAbsolutePath());
 
-            if(args.length > 1 && args[0].equals("--war")) {
-                File war = new File(args[1]);
-                Context ctx = tomcat.addWebapp("", war.getAbsolutePath());
-            }
+            Class filterClass = MyFilter.class;
+            String filterName = filterClass.getName();
+            FilterDef def = new FilterDef();
+            def.setFilterName(filterName);
+            def.setFilter( new MyFilter() );
+            context.addFilterDef( def );
+            FilterMap map = new FilterMap();
+            map.setFilterName( filterName );
+            map.addURLPattern( "/*" );
+            context.addFilterMap( map );
 
             // Start Tomcat
             tomcat.start();
