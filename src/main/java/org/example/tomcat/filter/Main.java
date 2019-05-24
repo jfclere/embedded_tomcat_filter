@@ -62,6 +62,7 @@ public class Main {
             File base = new File(System.getProperty("java.io.tmpdir"));
             Context context = tomcat.addContext("", base.getAbsolutePath());
 
+            // Add Filter
             Class filterClass = MyFilter.class;
             String filterName = filterClass.getName();
             FilterDef def = new FilterDef();
@@ -72,6 +73,11 @@ public class Main {
             map.setFilterName( filterName );
             map.addURLPattern( "/*" );
             context.addFilterMap( map );
+
+            // Add servlet
+            tomcat.addServlet(context, "MyServlet", new MyServlet());
+            context.addServletMappingDecoded("/*", "MyServlet");
+
 
             // Start Tomcat
             tomcat.start();
