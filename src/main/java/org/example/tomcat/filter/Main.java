@@ -78,9 +78,15 @@ public class Main {
             tomcat.addServlet(context, "MyServlet", new MyServlet());
             context.addServletMappingDecoded("/*", "MyServlet");
 
-
             // Start Tomcat
             tomcat.start();
+
+            FilterDef[] filters = context.findFilterDefs();
+            for (int i = 0; i < filters.length; i++) {
+                System.out.println("Filter: " + filters[i].getFilter());
+            }
+
+            // Wait until we stop Tomcat
             tomcat.getServer().await();
 
         } catch (Exception e) {
