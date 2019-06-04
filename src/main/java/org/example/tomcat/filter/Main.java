@@ -26,6 +26,7 @@ import org.apache.juli.logging.LogFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -34,6 +35,8 @@ import java.util.logging.Logger;
 import javax.servlet.Filter;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
+import org.apache.tomcat.util.descriptor.web.ContextService;
+import org.apache.tomcat.util.descriptor.web.ContextHandler;
 
 public class Main {
     private static final Log log = LogFactory.getLog(Main.class);
@@ -84,6 +87,16 @@ public class Main {
             FilterDef[] filters = context.findFilterDefs();
             for (int i = 0; i < filters.length; i++) {
                 System.out.println("Filter: " + filters[i].getFilter());
+            }
+            ContextService[] services = context.getNamingResources().findServices();
+            for (int i = 0; i < services.length; i++) {
+                System.out.println("Service: " + services[i]);
+                Iterator<String> names = services[i].getHandlers();
+                while(names.hasNext()) {
+                    String name = names.next();
+                    ContextHandler handler = services[i].getHandler(name);
+                    System.out.println("Handler: " + handler);
+                }
             }
 
             // Wait until we stop Tomcat
