@@ -42,6 +42,7 @@ public class MyServlet extends HttpServlet {
          out.println("<title>Hello, World</title></head>");
          out.println("<body>");
          out.println("<h1>Hello, world!</h1>");
+         out.println(request.getHeader("Sec-WebSocket-Extensions"));
          out.println("</body>");
          out.println("</html>");
       } finally {
